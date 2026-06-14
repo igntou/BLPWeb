@@ -1,0 +1,10 @@
+{
+  "name": "blue-phoenix-web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Landing de Blue Phoenix Lab + backend de captura de leads (Vercel).",
+  "dependencies": {
+    "resend": "^4.0.0"
+  }
+}
