@@ -1,80 +1,165 @@
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Creá tu Agente de Contenido con Claude Desktop — Blue Phoenix Lab</title>
 <style>
-  :root{--c:#0099FF;--cd:rgba(0,153,255,0.12);--cb:rgba(0,153,255,0.25);--n:#0A1628;}
-  .w{font-family:var(--font-sans);max-width:680px;margin:0 auto;padding-bottom:2.5rem;}
-  .hero{background:var(--n);border-radius:var(--border-radius-lg);padding:2rem 1.75rem 1.6rem;margin-bottom:1.25rem;border:0.5px solid var(--cb);}
-  .hbadge{display:inline-flex;align-items:center;gap:5px;background:var(--cd);border:0.5px solid var(--cb);border-radius:20px;padding:3px 12px;font-size:11px;color:var(--c);font-weight:500;margin-bottom:0.9rem;}
-  .hero h1{font-size:21px;font-weight:500;color:#fff;margin:0 0 0.4rem;line-height:1.3;}
-  .hero h1 span{color:var(--c);}
-  .hero p{font-size:13px;color:rgba(255,255,255,0.55);margin:0 0 1rem;line-height:1.6;}
-  .tags{display:flex;flex-wrap:wrap;gap:6px;}
-  .tag{font-size:11px;background:rgba(0,153,255,0.13);color:#33AAFF;border-radius:4px;padding:3px 9px;}
-  .prog{height:3px;background:var(--color-border-tertiary);border-radius:2px;margin-bottom:1.1rem;overflow:hidden;}
-  .pf{height:100%;background:var(--c);border-radius:2px;transition:width 0.3s;}
-  .pills{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:1.25rem;}
-  .pill{padding:5px 12px;border-radius:20px;font-size:11.5px;font-weight:500;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer;transition:all 0.15s;}
-  .pill.on{background:var(--c);border-color:var(--c);color:#fff;}
-  .pill:hover:not(.on){background:var(--color-background-secondary);}
-  .pn{display:none;}
-  .pn.vis{display:block;}
-  .card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.2rem 1.4rem;margin-bottom:1rem;}
-  .card.ac{border-color:var(--cb);}
-  .slabel{font-size:10px;font-weight:500;color:var(--color-text-secondary);letter-spacing:0.07em;text-transform:uppercase;margin:0 0 8px;}
-  .sh{display:flex;align-items:center;gap:10px;margin-bottom:0.9rem;}
-  .snum{width:27px;height:27px;border-radius:50%;background:var(--c);color:#fff;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-  .snum.dk{background:var(--n);border:1px solid var(--c);}
-  .stitle{font-size:15px;font-weight:500;color:var(--color-text-primary);margin:0;}
-  .sdesc{font-size:13px;color:var(--color-text-secondary);line-height:1.6;margin:0 0 0.9rem;}
-  .pbox{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:0.85rem 1rem;margin:0.7rem 0;position:relative;}
-  .plbl{font-size:10px;font-weight:500;color:var(--c);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:5px;}
-  .pt{font-size:11.5px;color:var(--color-text-primary);line-height:1.7;font-family:var(--font-mono);white-space:pre-wrap;word-break:break-word;margin:0;}
-  .cbtn{position:absolute;top:8px;right:8px;padding:3px 8px;font-size:11px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer;display:flex;align-items:center;gap:4px;}
-  .cbtn:hover{background:var(--color-background-secondary);}
-  .div{height:0.5px;background:var(--color-border-tertiary);margin:1rem 0;}
-  .cl{list-style:none;padding:0;margin:0.4rem 0;}
-  .cl li{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--color-text-secondary);padding:5px 0;line-height:1.5;border-bottom:0.5px solid var(--color-border-tertiary);}
-  .cl li:last-child{border-bottom:none;}
-  .cl li i{color:var(--c);font-size:14px;margin-top:1px;flex-shrink:0;}
-  .cl li strong{color:var(--color-text-primary);font-weight:500;}
-  .nl{counter-reset:n;list-style:none;padding:0;margin:0.5rem 0;}
-  .nl li{counter-increment:n;display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:13px;color:var(--color-text-secondary);line-height:1.5;}
-  .nl li:last-child{border-bottom:none;}
-  .nl li::before{content:counter(n);min-width:20px;height:20px;border-radius:50%;background:var(--cd);color:var(--c);font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
-  .nl li strong{color:var(--color-text-primary);font-weight:500;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin:0.75rem 0;}
-  .gc{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:0.75rem;}
-  .gc .gl{font-size:10px;font-weight:500;color:var(--c);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:4px;}
-  .gc p{font-size:12px;color:var(--color-text-secondary);margin:0;line-height:1.5;}
-  .flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0.75rem 0;}
-  .fn{background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:5px 11px;font-size:12px;color:var(--color-text-primary);font-weight:500;}
-  .fn.hi{background:var(--cd);border-color:var(--cb);color:var(--c);}
-  .abox{background:var(--cd);border:0.5px solid var(--cb);border-radius:var(--border-radius-md);padding:0.85rem 1rem;margin:0.75rem 0;display:flex;gap:9px;align-items:flex-start;}
-  .abox i{color:var(--c);font-size:17px;margin-top:1px;flex-shrink:0;}
-  .abox p{font-size:13px;color:var(--color-text-secondary);margin:0;line-height:1.5;}
-  .abox strong{color:var(--color-text-primary);font-weight:500;}
-  .phase{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;margin-bottom:0.75rem;}
-  .ph1{background:var(--cd);color:var(--c);border:0.5px solid var(--cb);}
-  .ph2{background:rgba(29,158,117,0.12);color:#0F6E56;border:0.5px solid rgba(29,158,117,0.3);}
-  .phb{background:rgba(239,159,39,0.13);color:#854F0B;border:0.5px solid rgba(239,159,39,0.3);}
-  .nf{display:flex;justify-content:space-between;align-items:center;margin-top:1.4rem;}
-  .nb{padding:7px 15px;border-radius:var(--border-radius-md);font-size:13px;font-weight:500;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary);cursor:pointer;display:flex;align-items:center;gap:5px;}
-  .nb.p{background:var(--c);border-color:var(--c);color:#fff;}
-  .nb:disabled{opacity:0.3;cursor:default;}
-  .nb:hover:not(:disabled):not(.p){background:var(--color-background-secondary);}
-  .clbl{font-size:12px;color:var(--color-text-secondary);}
-  .ft{text-align:center;padding-top:1.25rem;border-top:0.5px solid var(--color-border-tertiary);margin-top:1.5rem;}
-  .ft p{font-size:12px;color:var(--color-text-secondary);margin:0;}
-  .ft a{color:var(--c);text-decoration:none;}
-  .prow{display:flex;flex-wrap:wrap;gap:5px;margin:0.6rem 0;}
-  .ptag{font-size:11px;padding:3px 9px;border-radius:20px;background:var(--cd);color:var(--c);border:0.5px solid var(--cb);font-weight:500;}
-  .ptag.g{background:var(--color-background-secondary);color:var(--color-text-secondary);border-color:var(--color-border-tertiary);}
-</style>
+  :root{
+    --navy:#0A1628;
+    --cyan:#0099FF;
+    --cyan-bright:#3DA9FF;
+    --cyan-soft:rgba(0,153,255,0.09);
+    --cyan-border:rgba(0,153,255,0.28);
+    --bg:#F5F8FB;
+    --surface:#FFFFFF;
+    --surface-2:#EEF2F7;
+    --text:#16202E;
+    --text-2:#5C6877;
+    --text-3:#8A95A3;
+    --border:#E4E9EF;
+    --border-2:#D6DDE5;
+    --code-bg:#0C1A2B;
+    --code-line:#16273B;
+    --code-text:#DCE6F2;
+    --green:#1F9E6E;
+    --green-soft:rgba(31,158,110,0.10);
+    --green-border:rgba(31,158,110,0.30);
+    --amber:#C8860B;
+    --amber-soft:rgba(232,160,40,0.12);
+    --amber-border:rgba(232,160,40,0.32);
+    --r-lg:16px;--r-md:10px;
+    --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.5;}
+  .ic{display:inline-flex;align-items:center;justify-content:center;}
+  .ic svg{width:1em;height:1em;display:block;}
+  .w{max-width:720px;margin:0 auto;padding:1.5rem 1.25rem 3rem;}
 
-<h2 class="sr-only">Guía completa v2: Agente de Contenido con Claude Desktop — Blue Phoenix Lab</h2>
+  /* HERO */
+  .hero{background:var(--navy);border-radius:var(--r-lg);padding:2.4rem 2.1rem 2rem;margin-bottom:1.5rem;}
+  .hbadge{display:inline-flex;align-items:center;gap:8px;background:var(--cyan-soft);border:1px solid var(--cyan-border);border-radius:30px;padding:5px 14px;font-size:12px;color:var(--cyan-bright);font-weight:600;margin-bottom:1.2rem;letter-spacing:0.01em;}
+  .hdot{width:7px;height:7px;border-radius:2px;background:var(--cyan);display:inline-block;}
+  .hero h1{font-size:32px;font-weight:600;color:#fff;margin:0 0 0.7rem;line-height:1.18;letter-spacing:-0.02em;}
+  .hero h1 span{color:var(--cyan-bright);}
+  .hero p{font-size:16px;color:rgba(255,255,255,0.6);margin:0 0 1.5rem;line-height:1.6;max-width:48ch;}
+  .tags{display:flex;flex-wrap:wrap;gap:7px;}
+  .tag{font-size:12px;background:rgba(0,153,255,0.13);color:var(--cyan-bright);border-radius:6px;padding:5px 11px;font-weight:500;}
+
+  /* PROGRESS + PILLS */
+  .prog{height:3px;background:var(--border);border-radius:2px;margin-bottom:1.3rem;overflow:hidden;}
+  .pf{height:100%;background:var(--cyan);border-radius:2px;transition:width 0.35s ease;}
+  .pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.6rem;}
+  .pill{padding:7px 14px;border-radius:30px;font-size:12.5px;font-weight:500;border:1px solid var(--border-2);background:var(--surface);color:var(--text-2);cursor:pointer;transition:all 0.15s;font-family:inherit;}
+  .pill.on{background:var(--cyan);border-color:var(--cyan);color:#fff;}
+  .pill:hover:not(.on){background:var(--surface-2);color:var(--text);}
+
+  /* PANELS + CARDS */
+  .pn{display:none;}
+  .pn.vis{display:block;animation:fade 0.25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.6rem 1.7rem;margin-bottom:1.1rem;}
+  .card.ac{border-color:var(--cyan-border);background:var(--cyan-soft);}
+  .slabel{font-size:11px;font-weight:600;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;margin:0 0 10px;}
+  .sh{display:flex;align-items:center;gap:13px;margin-bottom:1.1rem;}
+  .snum{width:32px;height:32px;border-radius:50%;background:var(--cyan);color:#fff;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .snum.dk{background:var(--navy);color:var(--cyan-bright);}
+  .stitle{font-size:20px;font-weight:600;color:var(--text);margin:0;letter-spacing:-0.01em;}
+  .sdesc{font-size:15.5px;color:var(--text-2);line-height:1.65;margin:0 0 1.1rem;}
+
+  /* LISTS */
+  .cl{list-style:none;padding:0;margin:0.5rem 0;}
+  .cl li{display:flex;gap:11px;align-items:flex-start;font-size:15px;color:var(--text-2);padding:9px 0;line-height:1.55;border-bottom:1px solid var(--border);}
+  .cl li:last-child{border-bottom:none;}
+  .cl li .ic{color:var(--cyan);font-size:17px;margin-top:1px;flex-shrink:0;}
+  .cl li strong{color:var(--text);font-weight:600;}
+  .nl{counter-reset:n;list-style:none;padding:0;margin:0.5rem 0;}
+  .nl li{counter-increment:n;display:flex;gap:13px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--text-2);line-height:1.55;}
+  .nl li:last-child{border-bottom:none;}
+  .nl li::before{content:counter(n);min-width:24px;height:24px;border-radius:50%;background:var(--cyan-soft);color:var(--cyan);font-size:12.5px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .nl li strong{color:var(--text);font-weight:600;}
+
+  /* GRID */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:0.5rem 0;}
+  .gc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:0.95rem 1rem;}
+  .gc .gl{font-size:10.5px;font-weight:600;color:var(--cyan);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:6px;}
+  .gc p{font-size:13.5px;color:var(--text-2);margin:0;line-height:1.5;}
+
+  /* FLOW */
+  .flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0.5rem 0 0.2rem;}
+  .fn{background:var(--surface-2);border:1px solid var(--border-2);border-radius:var(--r-md);padding:7px 13px;font-size:13px;color:var(--text);font-weight:500;}
+  .fn.hi{background:var(--cyan-soft);border-color:var(--cyan-border);color:var(--cyan);}
+  .flow .ic{color:var(--text-3);font-size:15px;}
+
+  /* NOTE BOX */
+  .abox{background:var(--cyan-soft);border:1px solid var(--cyan-border);border-radius:var(--r-md);padding:1rem 1.1rem;margin:1rem 0 0;display:flex;gap:11px;align-items:flex-start;}
+  .abox .ic{color:var(--cyan);font-size:19px;margin-top:1px;flex-shrink:0;}
+  .abox p{font-size:14px;color:var(--text-2);margin:0;line-height:1.6;}
+  .abox strong{color:var(--text);font-weight:600;}
+
+  /* PHASE BADGE */
+  .phase{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:5px 13px;border-radius:30px;margin-bottom:1rem;}
+  .ph1{background:var(--cyan-soft);color:var(--cyan);border:1px solid var(--cyan-border);}
+  .ph2{background:var(--green-soft);color:var(--green);border:1px solid var(--green-border);}
+  .phb{background:var(--amber-soft);color:var(--amber);border:1px solid var(--amber-border);}
+
+  /* CODE / PROMPT BOX */
+  .div{height:1px;background:var(--border);margin:1.4rem 0;}
+  .pbox{background:var(--code-bg);border:1px solid var(--code-line);border-radius:12px;padding:2.6rem 1.2rem 1.15rem;margin:0.7rem 0;position:relative;}
+  .plbl{font-size:10.5px;font-weight:600;color:var(--cyan-bright);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:8px;}
+  .pt{font-size:13px;color:var(--code-text);line-height:1.75;font-family:var(--mono);white-space:pre-wrap;word-break:break-word;margin:0;}
+  .cbtn{position:absolute;top:10px;right:10px;padding:6px 11px;font-size:12px;font-weight:500;border:1px solid rgba(255,255,255,0.16);border-radius:8px;background:rgba(255,255,255,0.06);color:#CFE0F2;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-family:inherit;transition:all 0.15s;}
+  .cbtn:hover{background:rgba(255,255,255,0.12);}
+  .cbtn .ic{font-size:14px;}
+  .cbtn.ok{color:#5FD39B;border-color:rgba(95,211,155,0.4);}
+
+  /* NAV FOOTER */
+  .nf{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:1.8rem;}
+  .nb{padding:10px 18px;border-radius:var(--r-md);font-size:14px;font-weight:500;border:1px solid var(--border-2);background:var(--surface);color:var(--text);cursor:pointer;display:inline-flex;align-items:center;gap:7px;font-family:inherit;transition:all 0.15s;}
+  .nb.p{background:var(--cyan);border-color:var(--cyan);color:#fff;}
+  .nb:disabled{opacity:0.35;cursor:default;}
+  .nb:hover:not(:disabled):not(.p){background:var(--surface-2);}
+  .nb.p:hover:not(:disabled){background:#0089E6;}
+  .clbl{font-size:13px;color:var(--text-3);font-weight:500;text-align:center;}
+
+  /* CTA */
+  .cta{display:inline-flex;align-items:center;gap:8px;background:var(--cyan);color:#fff;border-radius:var(--r-md);padding:12px 20px;font-size:15px;font-weight:600;text-decoration:none;margin-top:1.1rem;transition:background 0.15s;}
+  .cta:hover{background:#0089E6;}
+  .cta .ic{font-size:17px;}
+
+  /* PILL ROW (bonus) */
+  .prow{display:flex;flex-wrap:wrap;gap:7px;margin:0.7rem 0 0;}
+  .ptag{font-size:12px;padding:5px 12px;border-radius:30px;background:var(--cyan-soft);color:var(--cyan);border:1px solid var(--cyan-border);font-weight:500;}
+
+  /* FOOTER */
+  .ft{text-align:center;padding-top:1.6rem;border-top:1px solid var(--border);margin-top:2rem;}
+  .ft p{font-size:13px;color:var(--text-3);margin:0;}
+  .ft a{color:var(--cyan);font-weight:600;text-decoration:none;}
+  .ft a:hover{text-decoration:underline;}
+
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
+
+  @media(max-width:560px){
+    .w{padding:1rem 0.9rem 2.5rem;}
+    .hero{padding:1.8rem 1.4rem 1.5rem;}
+    .hero h1{font-size:25px;}
+    .hero p{font-size:14.5px;}
+    .card{padding:1.3rem 1.2rem;}
+    .stitle{font-size:18px;}
+    .nb{padding:9px 14px;font-size:13px;}
+  }
+</style>
+</head>
+<body>
+<h1 class="sr-only">Guía: Creá tu Agente de Contenido con Claude Desktop — Blue Phoenix Lab</h1>
 
 <div class="w">
   <div class="hero">
-    <div class="hbadge"><i class="ti ti-sparkles" aria-hidden="true" style="font-size:11px;"></i> Blue Phoenix Lab — Guía Completa</div>
+    <div class="hbadge"><span class="hdot"></span> Blue Phoenix Lab — Guía Completa</div>
     <h1>Creá tu <span>Agente de Contenido</span><br>con Claude Desktop</h1>
     <p>De cero a tu agente personalizado en una sola sesión — con tu Mapa de Contenido™, tu estilo visual y prompts listos para usar cada semana.</p>
     <div class="tags">
@@ -103,26 +188,26 @@
   <!-- P0: INTRO -->
   <div class="pn vis" id="p0">
     <div class="card">
-      <div class="sh"><div class="snum dk"><i class="ti ti-map" aria-hidden="true" style="font-size:12px;color:var(--c);"></i></div><p class="stitle">¿Qué vas a construir?</p></div>
+      <div class="sh"><div class="snum dk"><span class="ic" data-ic="map"></span></div><p class="stitle">¿Qué vas a construir?</p></div>
       <p class="sdesc">Un agente que conoce tu negocio en profundidad, habla con tu voz, crea diseños con tus colores y organiza todo tu contenido — sin que suene genérico.</p>
       <div class="flow">
         <span class="fn hi">Tu negocio</span>
-        <i class="ti ti-arrow-right" aria-hidden="true" style="color:var(--color-text-secondary);font-size:13px;"></i>
+        <span class="ic" data-ic="right"></span>
         <span class="fn">Mapa de Contenido™</span>
-        <i class="ti ti-arrow-right" aria-hidden="true" style="color:var(--color-text-secondary);font-size:13px;"></i>
+        <span class="ic" data-ic="right"></span>
         <span class="fn hi">Brand Reference</span>
-        <i class="ti ti-arrow-right" aria-hidden="true" style="color:var(--color-text-secondary);font-size:13px;"></i>
+        <span class="ic" data-ic="right"></span>
         <span class="fn">PDF al Project</span>
-        <i class="ti ti-arrow-right" aria-hidden="true" style="color:var(--color-text-secondary);font-size:13px;"></i>
+        <span class="ic" data-ic="right"></span>
         <span class="fn hi">Contenido listo</span>
       </div>
       <div class="div"></div>
       <ul class="cl">
-        <li><i class="ti ti-check" aria-hidden="true"></i><span>El agente te hace las preguntas clave para entender tu negocio a fondo</span></li>
-        <li><i class="ti ti-check" aria-hidden="true"></i><span>Definís tus 5 pilares de contenido basados en tu avatar real</span></li>
-        <li><i class="ti ti-check" aria-hidden="true"></i><span>El agente aprende tu estilo visual — colores, fuentes, tono — y lo aplica en Canva</span></li>
-        <li><i class="ti ti-check" aria-hidden="true"></i><span>Todo queda en un PDF que se sube al Project como memoria permanente</span></li>
-        <li><i class="ti ti-check" aria-hidden="true"></i><span>Desde la segunda sesión: generás ideas, diseños y calendarios en minutos</span></li>
+        <li><span class="ic" data-ic="check"></span><span>El agente te hace las preguntas clave para entender tu negocio a fondo</span></li>
+        <li><span class="ic" data-ic="check"></span><span>Definís tus 5 pilares de contenido basados en tu avatar real</span></li>
+        <li><span class="ic" data-ic="check"></span><span>El agente aprende tu estilo visual — colores, fuentes, tono — y lo aplica en Canva</span></li>
+        <li><span class="ic" data-ic="check"></span><span>Todo queda en un PDF que se sube al Project como memoria permanente</span></li>
+        <li><span class="ic" data-ic="check"></span><span>Desde la segunda sesión: generás ideas, diseños y calendarios en minutos</span></li>
       </ul>
     </div>
     <div class="card ac">
@@ -150,7 +235,7 @@
         <li><span>Repetí el proceso para <strong>Airtable</strong> — autorizá con tu cuenta de Airtable</span></li>
       </ol>
       <div class="abox">
-        <i class="ti ti-info-circle" aria-hidden="true"></i>
+        <span class="ic" data-ic="info"></span>
         <p><strong>Plan gratuito:</strong> Los conectores de Canva y Airtable están disponibles sin costo. El plan Pro ($20/mes) solo es necesario para el Bonus de automatización con Cowork al final de esta guía.</p>
       </div>
     </div>
@@ -171,9 +256,9 @@
       </ol>
       <div class="div"></div>
       <p class="slabel">System prompt completo — pegá esto en Project Instructions</p>
-      <div class="pbox" style="padding-top:2.2rem;">
+      <div class="pbox">
         <div class="plbl">System prompt</div>
-        <button class="cbtn" onclick="cp('sp')" id="csp"><i class="ti ti-copy" aria-hidden="true"></i> Copiar</button>
+        <button class="cbtn" onclick="cp('sp',this)"><span class="ic" data-ic="copy"></span> Copiar</button>
         <pre class="pt" id="sp">## ROL
 Sos mi Agente de Contenido personal. Tu trabajo es
 ayudarme a crear contenido auténtico y personalizado
@@ -316,24 +401,24 @@ SI FALTA CONTEXTO:
   <div class="pn" id="p3">
     <div class="card">
       <div class="sh"><div class="snum">3</div><p class="stitle">Sesión 1 — Onboarding del agente</p></div>
-      <div class="phase ph1"><i class="ti ti-player-play" aria-hidden="true" style="font-size:11px;"></i> Solo la primera vez · 15-25 minutos</div>
+      <div class="phase ph1">Solo la primera vez · 15-25 minutos</div>
       <p class="sdesc">El agente detecta que no hay PDF y ejecuta el onboarding automáticamente. Al final de esta sesión tu agente ya sabe todo sobre tu negocio y tiene tu estilo visual listo para usar.</p>
       <div class="flow">
         <span class="fn hi">Primer mensaje</span>
-        <i class="ti ti-arrow-right" aria-hidden="true" style="color:var(--color-text-secondary);font-size:13px;"></i>
+        <span class="ic" data-ic="right"></span>
         <span class="fn">8 preguntas</span>
-        <i class="ti ti-arrow-right" aria-hidden="true" style="color:var(--color-text-secondary);font-size:13px;"></i>
+        <span class="ic" data-ic="right"></span>
         <span class="fn hi">Brand visual</span>
-        <i class="ti ti-arrow-right" aria-hidden="true" style="color:var(--color-text-secondary);font-size:13px;"></i>
+        <span class="ic" data-ic="right"></span>
         <span class="fn">PDF unificado</span>
-        <i class="ti ti-arrow-right" aria-hidden="true" style="color:var(--color-text-secondary);font-size:13px;"></i>
+        <span class="ic" data-ic="right"></span>
         <span class="fn hi">Subir al Project</span>
       </div>
       <div class="div"></div>
       <p class="slabel">Primer mensaje para activar el onboarding</p>
-      <div class="pbox" style="padding-top:2rem;">
+      <div class="pbox">
         <div class="plbl">Copiá esto y envialo</div>
-        <button class="cbtn" onclick="cp('ob')" id="cob"><i class="ti ti-copy" aria-hidden="true"></i> Copiar</button>
+        <button class="cbtn" onclick="cp('ob',this)"><span class="ic" data-ic="copy"></span> Copiar</button>
         <pre class="pt" id="ob">Hola, es nuestra primera sesión.
 No hay PDF en el Project todavía.
 Ejecutá el protocolo de onboarding completo.</pre>
@@ -347,16 +432,16 @@ Ejecutá el protocolo de onboarding completo.</pre>
         <li><span><strong>Subir al Project:</strong> Descargás el PDF y lo subís a los archivos del Project (ícono de clip en la barra superior). El agente lo lee automáticamente en todas las sesiones siguientes.</span></li>
       </ol>
       <div class="abox">
-        <i class="ti ti-photo" aria-hidden="true"></i>
+        <span class="ic" data-ic="info"></span>
         <p><strong>Para la imagen de referencia:</strong> Subí cualquier imagen al chat — un post tuyo que te guste, una referencia de otra cuenta, o una captura de pantalla. El agente la analiza y la convierte en descripción de estilo visual para Canva.</p>
       </div>
     </div>
     <div class="card ac">
       <p class="slabel">Al terminar la sesión 1 tenés en tu Project</p>
       <ul class="cl">
-        <li><i class="ti ti-file-text" aria-hidden="true"></i><span><strong>PDF "Mapa de Contenido™ + Brand Reference"</strong> — la memoria permanente del agente</span></li>
-        <li><i class="ti ti-palette" aria-hidden="true"></i><span><strong>Prompt base de Canva ya configurado</strong> con tus colores, fuente y estilo dentro del PDF</span></li>
-        <li><i class="ti ti-check" aria-hidden="true"></i><span><strong>Agente listo</strong> para crear contenido personalizado desde la próxima sesión</span></li>
+        <li><span class="ic" data-ic="check"></span><span><strong>PDF "Mapa de Contenido™ + Brand Reference"</strong> — la memoria permanente del agente</span></li>
+        <li><span class="ic" data-ic="check"></span><span><strong>Prompt base de Canva ya configurado</strong> con tus colores, fuente y estilo dentro del PDF</span></li>
+        <li><span class="ic" data-ic="check"></span><span><strong>Agente listo</strong> para crear contenido personalizado desde la próxima sesión</span></li>
       </ul>
     </div>
   </div>
@@ -365,12 +450,12 @@ Ejecutá el protocolo de onboarding completo.</pre>
   <div class="pn" id="p4">
     <div class="card">
       <div class="sh"><div class="snum">4</div><p class="stitle">Prompts para usar cada semana</p></div>
-      <div class="phase ph2"><i class="ti ti-refresh" aria-hidden="true" style="font-size:11px;"></i> Sesión 2 en adelante</div>
+      <div class="phase ph2">Sesión 2 en adelante</div>
       <p class="sdesc">El agente lee el PDF automáticamente. Ya sabe quién sos, a quién le hablás y cómo se ve tu marca. Estos prompts son los que usás semana a semana.</p>
       <p class="slabel">Generar calendario de 2 semanas</p>
-      <div class="pbox" style="padding-top:2rem;">
+      <div class="pbox">
         <div class="plbl">Calendario semanal</div>
-        <button class="cbtn" onclick="cp('cal')" id="ccal"><i class="ti ti-copy" aria-hidden="true"></i> Copiar</button>
+        <button class="cbtn" onclick="cp('cal',this)"><span class="ic" data-ic="copy"></span> Copiar</button>
         <pre class="pt" id="cal">Generá el calendario de contenido para las próximas
 2 semanas, empezando el [fecha de inicio].
 - 1 post por día, lunes a viernes
@@ -384,9 +469,9 @@ Mostrámelo primero antes de guardar en Airtable.</pre>
       </div>
       <div class="div"></div>
       <p class="slabel">Generar un post específico</p>
-      <div class="pbox" style="padding-top:2rem;">
+      <div class="pbox">
         <div class="plbl">Post puntual</div>
-        <button class="cbtn" onclick="cp('post')" id="cpost"><i class="ti ti-copy" aria-hidden="true"></i> Copiar</button>
+        <button class="cbtn" onclick="cp('post',this)"><span class="ic" data-ic="copy"></span> Copiar</button>
         <pre class="pt" id="post">Necesito un [Carrusel / Reel / Post imagen] del
 pilar "[nombre del pilar]" para el [fecha].
 
@@ -397,9 +482,9 @@ Caption completo con hook, cuerpo, CTA y 5 hashtags.</pre>
       </div>
       <div class="div"></div>
       <p class="slabel">Aprobar y guardar en Airtable</p>
-      <div class="pbox" style="padding-top:2rem;">
+      <div class="pbox">
         <div class="plbl">Confirmación</div>
-        <button class="cbtn" onclick="cp('apr')" id="capr"><i class="ti ti-copy" aria-hidden="true"></i> Copiar</button>
+        <button class="cbtn" onclick="cp('apr',this)"><span class="ic" data-ic="copy"></span> Copiar</button>
         <pre class="pt" id="apr">Aprobado. Guardá este post en Airtable,
 tabla "Contenido", con Status = "Aprobado".
 Confirmame cuando esté guardado.</pre>
@@ -413,9 +498,9 @@ Confirmame cuando esté guardado.</pre>
       <div class="sh"><div class="snum">5</div><p class="stitle">Crear en Canva y gestionar Airtable</p></div>
       <p class="sdesc">El agente crea los diseños con tu estilo visual y gestiona todos los cambios en Airtable — incluyendo editar, actualizar estado o eliminar registros.</p>
       <p class="slabel">Crear carrusel en Canva</p>
-      <div class="pbox" style="padding-top:2rem;">
+      <div class="pbox">
         <div class="plbl">Prompt carrusel</div>
-        <button class="cbtn" onclick="cp('car')" id="ccar"><i class="ti ti-copy" aria-hidden="true"></i> Copiar</button>
+        <button class="cbtn" onclick="cp('car',this)"><span class="ic" data-ic="copy"></span> Copiar</button>
         <pre class="pt" id="car">Quiero crear el carrusel "[nombre del post]" en Canva.
 
 Primero mostrámelos textos de cada slide:
@@ -428,18 +513,18 @@ usando el Brand Reference y el prompt base del PDF.</pre>
       </div>
       <div class="div"></div>
       <p class="slabel">Crear post de imagen simple</p>
-      <div class="pbox" style="padding-top:2rem;">
+      <div class="pbox">
         <div class="plbl">Prompt post imagen</div>
-        <button class="cbtn" onclick="cp('img')" id="cimg"><i class="ti ti-copy" aria-hidden="true"></i> Copiar</button>
+        <button class="cbtn" onclick="cp('img',this)"><span class="ic" data-ic="copy"></span> Copiar</button>
         <pre class="pt" id="img">Creá en Canva el post imagen para "[nombre del post]".
 Usá el Brand Reference del PDF para los colores y estilo.
 Mostrámelo antes de guardar el link en Airtable.</pre>
       </div>
       <div class="div"></div>
       <p class="slabel">Gestionar registros en Airtable</p>
-      <div class="pbox" style="padding-top:2rem;">
+      <div class="pbox">
         <div class="plbl">Actualizar / eliminar</div>
-        <button class="cbtn" onclick="cp('at')" id="cat"><i class="ti ti-copy" aria-hidden="true"></i> Copiar</button>
+        <button class="cbtn" onclick="cp('at',this)"><span class="ic" data-ic="copy"></span> Copiar</button>
         <pre class="pt" id="at">En Airtable, en el registro "[nombre del post]":
 
 Opciones — decí cuál querés:
@@ -452,7 +537,7 @@ Opciones — decí cuál querés:
 Confirmame cuando esté hecho.</pre>
       </div>
       <div class="abox">
-        <i class="ti ti-bulb" aria-hidden="true"></i>
+        <span class="ic" data-ic="info"></span>
         <p><strong>Canva Pro:</strong> Si tenés Canva Pro, el agente puede crear tu Brand Kit directamente en Canva con tus colores y fuentes. Pedíselo con: "Creá mi Brand Kit en Canva con los datos del Brand Reference del PDF."</p>
       </div>
     </div>
@@ -464,25 +549,25 @@ Confirmame cuando esté hecho.</pre>
       <div class="sh"><div class="snum">6</div><p class="stitle">Publicar y cerrar el ciclo</p></div>
       <p class="sdesc">La publicación es manual — vos descargás y publicás. El agente actualiza el estado en Airtable para que tu calendario siempre esté al día.</p>
       <ul class="cl">
-        <li><i class="ti ti-download" aria-hidden="true"></i><span><strong>Descargá</strong> el diseño desde Canva en JPG o PNG</span></li>
-        <li><i class="ti ti-clipboard-text" aria-hidden="true"></i><span><strong>Copiá</strong> el caption desde Airtable — ya viene con los 5 hashtags</span></li>
-        <li><i class="ti ti-upload" aria-hidden="true"></i><span><strong>Publicá</strong> en tu red social en la fecha indicada</span></li>
-        <li><i class="ti ti-edit" aria-hidden="true"></i><span><strong>Pedile al agente</strong> que cambie el Status a "Publicado" en Airtable</span></li>
+        <li><span class="ic" data-ic="check"></span><span><strong>Descargá</strong> el diseño desde Canva en JPG o PNG</span></li>
+        <li><span class="ic" data-ic="check"></span><span><strong>Copiá</strong> el caption desde Airtable — ya viene con los 5 hashtags</span></li>
+        <li><span class="ic" data-ic="check"></span><span><strong>Publicá</strong> en tu red social en la fecha indicada</span></li>
+        <li><span class="ic" data-ic="check"></span><span><strong>Pedile al agente</strong> que cambie el Status a "Publicado" en Airtable</span></li>
       </ul>
       <div class="div"></div>
       <p class="slabel">Marcar como publicado</p>
-      <div class="pbox" style="padding-top:2rem;">
+      <div class="pbox">
         <div class="plbl">Prompt de cierre</div>
-        <button class="cbtn" onclick="cp('pub')" id="cpub"><i class="ti ti-copy" aria-hidden="true"></i> Copiar</button>
+        <button class="cbtn" onclick="cp('pub',this)"><span class="ic" data-ic="copy"></span> Copiar</button>
         <pre class="pt" id="pub">Publiqué el post "[nombre del post]".
 Actualizá en Airtable: Status → "Publicado".
 Confirmame cuando esté hecho.</pre>
       </div>
       <div class="div"></div>
       <p class="slabel">Actualizar el Brand Reference si cambiás tu estilo</p>
-      <div class="pbox" style="padding-top:2rem;">
+      <div class="pbox">
         <div class="plbl">Prompt actualización de marca</div>
-        <button class="cbtn" onclick="cp('br')" id="cbr"><i class="ti ti-copy" aria-hidden="true"></i> Copiar</button>
+        <button class="cbtn" onclick="cp('br',this)"><span class="ic" data-ic="copy"></span> Copiar</button>
         <pre class="pt" id="br">Quiero actualizar mi Brand Reference.
 [Describí el cambio: nuevo color, fuente,
 imagen de referencia o estilo]
@@ -496,14 +581,14 @@ cambios para que lo vuelva a subir al Project.</pre>
   <!-- P7: BONUS COWORK -->
   <div class="pn" id="p7">
     <div class="card">
-      <div class="sh"><div class="snum dk"><i class="ti ti-bolt" aria-hidden="true" style="font-size:12px;color:var(--c);"></i></div><p class="stitle">Bonus — Automatizá con Claude Cowork</p></div>
-      <div class="phase phb"><i class="ti ti-star" aria-hidden="true" style="font-size:11px;"></i> Requiere Claude Pro · $20/mes</div>
+      <div class="sh"><div class="snum dk"><span class="ic" data-ic="bolt"></span></div><p class="stitle">Bonus — Automatizá con Claude Cowork</p></div>
+      <div class="phase phb">Requiere Claude Pro · $20/mes</div>
       <p class="sdesc">Claude Cowork ejecuta tareas automáticas en tu computadora aunque no tengas Claude abierto. Con esto tu agente genera ideas nuevas cada lunes y te manda el resumen del calendario cada viernes — solo.</p>
       <div class="div"></div>
       <p class="slabel">Mini-Bonus A — Ideas semanales automáticas a Airtable</p>
-      <div class="pbox" style="padding-top:2rem;">
+      <div class="pbox">
         <div class="plbl">Tarea semanal — lunes 9am</div>
-        <button class="cbtn" onclick="cp('cwa')" id="ccwa"><i class="ti ti-copy" aria-hidden="true"></i> Copiar</button>
+        <button class="cbtn" onclick="cp('cwa',this)"><span class="ic" data-ic="copy"></span> Copiar</button>
         <pre class="pt" id="cwa">Configurá esta tarea en Claude Cowork para que se
 ejecute cada lunes a las 9:00am:
 
@@ -520,9 +605,9 @@ Cuando estén guardadas, enviame un resumen a
       </div>
       <div class="div"></div>
       <p class="slabel">Mini-Bonus B — Resumen semanal del calendario por correo</p>
-      <div class="pbox" style="padding-top:2rem;">
+      <div class="pbox">
         <div class="plbl">Tarea semanal — viernes 6pm</div>
-        <button class="cbtn" onclick="cp('cwb')" id="ccwb"><i class="ti ti-copy" aria-hidden="true"></i> Copiar</button>
+        <button class="cbtn" onclick="cp('cwb',this)"><span class="ic" data-ic="copy"></span> Copiar</button>
         <pre class="pt" id="cwb">Configurá esta tarea en Claude Cowork para que se
 ejecute cada viernes a las 6:00pm:
 
@@ -537,62 +622,75 @@ Enviame el resumen a [tu email] con el asunto:
 'Resumen de contenido — semana del [fecha]'"</pre>
       </div>
       <div class="abox">
-        <i class="ti ti-settings" aria-hidden="true"></i>
+        <span class="ic" data-ic="info"></span>
         <p><strong>Cómo activar Cowork:</strong> Claude Desktop → menú superior → Cowork → Nueva tarea → pegá el prompt → configurá frecuencia (semanal), día y hora → Guardar. Cowork ejecuta la tarea automáticamente.</p>
       </div>
     </div>
     <div class="card ac">
-      <p style="font-size:14px;font-weight:500;color:var(--color-text-primary);margin:0 0 0.6rem;">¿Querés que tu agente haga esto solo desde el día 1?</p>
-      <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 0.85rem;line-height:1.6;">En Blue Phoenix Lab instalamos el Agente de Contenido completo en tu negocio — publicación automática incluida — en menos de 21 días.</p>
+      <p style="font-size:17px;font-weight:600;color:var(--text);margin:0 0 0.6rem;">¿Querés que tu agente haga esto solo desde el día 1?</p>
+      <p style="font-size:15px;color:var(--text-2);margin:0 0 1rem;line-height:1.65;">En Blue Phoenix Lab instalamos el Agente de Contenido completo en tu negocio — publicación automática incluida — en menos de 21 días.</p>
       <div class="prow">
         <span class="ptag">48 horas liberadas/semana</span>
         <span class="ptag">21 días de instalación</span>
         <span class="ptag">Sin equipo extra</span>
       </div>
-      <div style="margin-top:0.9rem;">
-        <a href="https://bluephoenixlab.com" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#0099FF;color:#fff;border-radius:var(--border-radius-md);padding:8px 16px;font-size:13px;font-weight:500;text-decoration:none;">
-          Agendá una llamada gratis <i class="ti ti-arrow-right" aria-hidden="true" style="font-size:13px;"></i>
-        </a>
-      </div>
+      <a class="cta" href="https://www.bluephoenixlab.com" target="_blank" rel="noopener">Hacé tu autodiagnóstico gratis <span class="ic" data-ic="right"></span></a>
     </div>
   </div>
 
   <div class="nf">
-    <button class="nb" id="bp" onclick="nav(-1)" disabled><i class="ti ti-arrow-left" aria-hidden="true"></i> Anterior</button>
+    <button class="nb" id="bp" onclick="nav(-1)" disabled><span class="ic" data-ic="left"></span> Anterior</button>
     <span class="clbl" id="cl">Sección 1 de 8</span>
-    <button class="nb p" id="bn" onclick="nav(1)">Siguiente <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+    <button class="nb p" id="bn" onclick="nav(1)">Siguiente <span class="ic" data-ic="right"></span></button>
   </div>
 
   <div class="ft">
-    <p>Blue Phoenix Lab · <a href="https://bluephoenixlab.com">bluephoenixlab.com</a> · @ignacio_tou</p>
+    <p>Blue Phoenix Lab · <a href="https://www.bluephoenixlab.com" target="_blank" rel="noopener">bluephoenixlab.com</a> · @ignacio_tou</p>
   </div>
 </div>
 
 <script>
+  var ICONS={
+    check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
+    copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>',
+    right:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+    left:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>',
+    info:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 17v-5h-1M11.5 8.5h.01"/></svg>',
+    map:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 4 6 2 5-2v14l-5 2-6-2-5 2V6z"/><path d="M9 4v14M15 6v14"/></svg>',
+    bolt:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>'
+  };
+  function paintIcons(root){
+    (root||document).querySelectorAll('[data-ic]').forEach(function(el){
+      if(el.dataset.painted)return;
+      var n=el.getAttribute('data-ic');
+      if(ICONS[n]){el.innerHTML=ICONS[n];el.dataset.painted='1';}
+    });
+  }
   var c=0,t=8;
   function go(n){
     document.querySelectorAll('.pn').forEach(function(p,i){p.classList.toggle('vis',i===n);});
     document.querySelectorAll('.pill').forEach(function(b,i){b.classList.toggle('on',i===n);});
     document.getElementById('bp').disabled=n===0;
     var bn=document.getElementById('bn');
-    bn.innerHTML=n===t-1?'&#10003; Listo':'Siguiente <i class="ti ti-arrow-right" aria-hidden="true" style="font-size:13px;"></i>';
+    bn.innerHTML=n===t-1?'<span class="ic" data-ic="check"></span> Listo':'Siguiente <span class="ic" data-ic="right"></span>';
+    paintIcons(bn);
     document.getElementById('cl').textContent='Sección '+(n+1)+' de '+t;
     document.getElementById('pf').style.width=((n+1)/t*100)+'%';
     c=n;
+    window.scrollTo({top:0,behavior:'smooth'});
   }
   function nav(d){var nx=c+d;if(nx>=0&&nx<t)go(nx);}
-  function cp(id){
+  function cp(id,btn){
     var el=document.getElementById(id);
     if(!el)return;
     navigator.clipboard.writeText(el.textContent.trim()).then(function(){
-      document.querySelectorAll('.cbtn').forEach(function(b){
-        var oc=b.getAttribute('onclick');
-        if(oc&&oc.indexOf("'"+id+"'")>-1){
-          var o=b.innerHTML;
-          b.innerHTML='<i class="ti ti-check" aria-hidden="true"></i> Copiado';
-          setTimeout(function(){b.innerHTML=o;},1500);
-        }
-      });
+      var o=btn.innerHTML;
+      btn.innerHTML='<span class="ic">'+ICONS.check+'</span> Copiado';
+      btn.classList.add('ok');
+      setTimeout(function(){btn.innerHTML=o;btn.classList.remove('ok');},1500);
     }).catch(function(){});
   }
+  paintIcons();
 </script>
+</body>
+</html>
