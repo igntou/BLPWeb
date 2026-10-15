@@ -432,13 +432,20 @@ h1, h2, h3 {
 .agenda__scheduler { flex: 1 1 460px; min-width: 0; }
 
 .scheduler {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-7) var(--space-6);
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-default);
   background: var(--surface-sunken);
-  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  text-align: center;
 }
 
-.scheduler iframe { display: block; width: 100%; height: 640px; border: 0; }
+.scheduler .body { max-width: 38ch; }
+.scheduler__icon { margin-bottom: var(--space-2); }
 
 /* --- FAQ ----------------------------------------------------------------- */
 .faq { margin: 0; display: flex; flex-direction: column; }
