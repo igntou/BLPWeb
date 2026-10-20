@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="es-CR">
+<head>
+<meta charset="utf-8"/>
+<title>BPL Salud · Asistentes de IA para consultorios y clínicas en Costa Rica</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="Menos ausencias, cero pacientes sin respuesta y menos carga administrativa. Asistentes de IA que trabajan con la agenda que ya usa."/>
+<meta name="robots" content="noindex,follow"/>
+<!--
+  PLACEHOLDERS PENDIENTES EN ESTA PÁGINA:
+  1. [PLACEHOLDER: URL del video — YouTube no listado, Vimeo o Wistia] → ver #hero-video-facade (data-video-url) y meta videoThumb
+  2. [PLACEHOLDER: thumbnail/poster del video] → ver .video-facade img
+  3. Calendario de agendamiento → resuelto con https://calendar.app.google/HB9gNUGYqVZdd3MPA (ver const CAL_URL en <script>)
+  4. [PLACEHOLDER: dominio y slug final de la landing] → confirmar con bpl.lat/salud o dominio propio
+  5. [PLACEHOLDER: Meta Pixel ID] → ver <script> comentado de Meta Pixel
+  6. [PLACEHOLDER: GA4 Measurement ID] → ver <script> comentado de GA4
+  7. [PLACEHOLDER: imagen Open Graph 1200x630] → ver meta og:image
+  8. [PLACEHOLDER: link a política de privacidad y redes sociales] → ver footer
+
+  Nota: sección de prueba social y sección de fundador quitadas a pedido —
+  sin caso verificado aún (pendiente entrega con cliente dental) y porque
+  Jorge se presenta directamente en el video del hero.
+-->
+<meta property="og:title" content="BPL Salud · Asistentes de IA para consultorios y clínicas en Costa Rica"/>
+<meta property="og:description" content="Menos ausencias, cero pacientes sin respuesta y menos carga administrativa. Asistentes de IA que trabajan con la agenda que ya usa."/>
+<meta property="og:image" content="../phoenix-mark.png"/><!-- TODO: reemplazar por imagen OG 1200x630 -->
+<meta property="og:url" content="https://bluephoenixlab.com/salud"/><!-- TODO: confirmar dominio/slug final -->
+<meta property="og:locale" content="es_CR"/>
+<meta property="og:type" content="website"/>
+<link rel="icon" href="../phoenix-mark.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg0:#060B14;--bg1:#0C1627;--bg2:#111D32;
+  --lt0:#F4F7FF;--lt1:#E8EDF7;
+  --cyan:#2DB1E1;--blue:#1E80D6;--deep:#1E5BA8;--navy:#0E1A2F;
+  --td:#F0F4FF;--md:rgba(240,244,255,.6);--md2:rgba(240,244,255,.38);
+  --tl:#0D1828;--ml:#546076;
+  --bd:rgba(255,255,255,.08);--bl:rgba(13,24,40,.1);
+  --grad:linear-gradient(135deg,#2DB1E1 0%,#1E5BA8 100%);
+  --green:#22c55e;
+  --fh:'Plus Jakarta Sans',sans-serif;--fb:'Plus Jakarta Sans',sans-serif;--fm:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--fb);background:var(--bg0);color:var(--td);overflow-x:hidden;}
+img{display:block;max-width:100%;}
+a{text-decoration:none;color:inherit;}
+button{font-family:var(--fb);}
+section[id]{scroll-margin-top:68px;}
+.wrap{max-width:1160px;margin:0 auto;padding:0 48px;}
+
+.r{opacity:0;transform:translateY(24px);transition:opacity .68s cubic-bezier(.22,1,.36,1),transform .68s cubic-bezier(.22,1,.36,1);}
+.r.on{opacity:1;transform:none;}
+.r[data-d="1"]{transition-delay:.08s}.r[data-d="2"]{transition-delay:.16s}
+.r[data-d="3"]{transition-delay:.24s}.r[data-d="4"]{transition-delay:.32s}
+
+.badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:rgba(45,177,225,.1);border:1px solid rgba(45,177,225,.24);font-family:var(--fm);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);}
+.bdot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 4px rgba(45,177,225,.22);animation:blink 2.4s ease-in-out infinite;flex-shrink:0;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.4;}}
+.lbl{font-family:var(--fm);font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--cyan);margin-bottom:14px;}
+.lbl-dark{color:var(--deep);}
+.sec-h2{font-family:var(--fh);font-size:clamp(24px,2.6vw,40px);font-weight:800;line-height:1.14;letter-spacing:-.03em;}
+.sec-sub{font-size:16px;line-height:1.7;color:var(--md);max-width:620px;}
+#problema .sec-sub,#mecanismo .sec-sub,#ruta .sec-sub,#llamada .sec-sub,#faq .sec-sub{color:var(--ml);}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 26px;border-radius:999px;font-family:var(--fb);font-size:14.5px;font-weight:600;border:none;cursor:pointer;transition:transform .15s,box-shadow .2s,background .2s;}
+.btn-p{background:var(--grad);color:#fff;box-shadow:0 8px 28px -8px rgba(30,128,214,.55);}
+.btn-p:hover{transform:translateY(-1px);box-shadow:0 14px 36px -8px rgba(30,128,214,.7);}
+.btn-g{background:rgba(255,255,255,.06);color:var(--td);border:1px solid var(--bd);}
+.btn-g:hover{background:rgba(255,255,255,.11);}
+.btn-g-lt{background:#fff;color:var(--tl);border:1px solid rgba(13,24,40,.12);box-shadow:0 4px 18px -8px rgba(13,24,40,.16);}
+.btn-g-lt:hover{background:var(--lt1);}
+.btn-block{width:100%;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(6,11,20,.82);backdrop-filter:blur(20px) saturate(1.3);border-bottom:1px solid var(--bd);}
+.nav-i{max-width:1160px;margin:0 auto;padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{display:flex;align-items:center;gap:10px;}
+.nav-logo img{width:32px;height:32px;object-fit:contain;}
+.nav-name{font-family:var(--fh);font-size:15px;font-weight:700;letter-spacing:-.02em;color:var(--td);}
+.nav-name em{color:var(--cyan);font-style:normal;}
+.nav-tag{font-family:var(--fm);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--md2);margin-left:10px;padding-left:10px;border-left:1px solid var(--bd);}
+
+/* HERO */
+#hero{min-height:92vh;display:flex;flex-direction:column;justify-content:center;padding-top:68px;position:relative;overflow:hidden;background:var(--bg0);}
+.hero-mesh{position:absolute;inset:0;pointer-events:none;background:radial-gradient(900px 650px at 78% 12%,rgba(45,177,225,.16),transparent 65%),radial-gradient(600px 500px at 10% 90%,rgba(30,91,168,.16),transparent 60%);}
+.hero-inner{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;gap:22px;padding:64px 0 70px;}
+h1{font-family:var(--fh);font-weight:800;line-height:1.08;letter-spacing:-.035em;color:var(--td);font-size:clamp(30px,4vw,54px);max-width:900px;}
+.hero-sub{font-size:16.5px;line-height:1.7;color:var(--md);max-width:600px;}
+.hero-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:6px;}
+.hero-meta{font-size:12px;font-family:var(--fm);color:var(--md2);letter-spacing:.1em;}
+
+.video-wrap{width:100%;max-width:860px;margin-top:18px;}
+.video-facade{position:relative;aspect-ratio:16/9;border-radius:20px;overflow:hidden;background:var(--bg2);border:1px solid var(--bd);cursor:pointer;box-shadow:0 40px 90px -30px rgba(14,26,47,.6);}
+.video-facade img{width:100%;height:100%;object-fit:cover;opacity:.78;}
+.video-facade .vf-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,11,20,.1),rgba(6,11,20,.55));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;}
+.vf-play{width:72px;height:72px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;box-shadow:0 14px 40px -8px rgba(30,128,214,.7);transition:transform .2s;}
+.video-facade:hover .vf-play{transform:scale(1.08);}
+.vf-play svg{width:26px;height:26px;fill:#fff;}
+.vf-caption{font-family:var(--fh);font-size:15px;font-weight:600;color:#fff;text-align:center;max-width:380px;padding:0 20px;}
+.video-wrap iframe{width:100%;aspect-ratio:16/9;border-radius:20px;border:none;display:block;}
+.video-note{margin-top:12px;font-family:var(--fm);font-size:12px;letter-spacing:.08em;color:var(--md2);text-align:center;}
+
+/* PROBLEMA */
+#problema{background:var(--lt0);color:var(--tl);padding:100px 0;}
+#problema .lbl{color:var(--deep);}
+#problema .sec-h2{color:var(--tl);}
+.pain-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:40px;}
+.pain-card{background:#fff;border:1px solid rgba(13,24,40,.09);border-radius:18px;padding:28px 30px;position:relative;overflow:hidden;box-shadow:0 4px 28px -12px rgba(13,24,40,.12);}
+.pain-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--grad);}
+.pain-card h3{font-family:var(--fh);font-size:16.5px;font-weight:700;letter-spacing:-.02em;color:var(--tl);margin-bottom:9px;}
+.pain-card p{font-size:14.5px;line-height:1.7;color:var(--ml);}
+.pain-close{font-family:var(--fh);font-size:19px;font-weight:700;letter-spacing:-.015em;color:var(--tl);margin-top:36px;max-width:620px;}
+
+/* MECANISMO */
+#mecanismo{background:var(--lt0);color:var(--tl);padding:100px 0;}
+#mecanismo .lbl{color:var(--deep);}
+#mecanismo .sec-h2{color:var(--tl);margin-bottom:16px;}
+#mecanismo .sec-sub{margin-bottom:46px;}
+.mech-diagram{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:18px;}
+.mech-col{background:#fff;border:1px solid rgba(13,24,40,.09);border-radius:18px;padding:26px 22px;box-shadow:0 4px 24px -12px rgba(13,24,40,.1);}
+.mech-col-tag{font-family:var(--fm);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--deep);margin-bottom:14px;}
+.mech-col ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.mech-col li{font-size:13.5px;line-height:1.5;color:var(--ml);padding-left:16px;position:relative;}
+.mech-col li::before{content:'·';position:absolute;left:0;color:var(--blue);font-weight:800;}
+.mech-arrow{font-size:22px;color:var(--blue);text-align:center;}
+.mech-note{margin-top:28px;font-size:13px;color:var(--ml);display:flex;align-items:flex-start;gap:8px;max-width:680px;}
+.mech-note span{flex-shrink:0;}
+@media(max-width:900px){.mech-diagram{grid-template-columns:1fr;}.mech-arrow{transform:rotate(90deg);}}
+
+/* RUTA / STEPS */
+#ruta{background:var(--bg0);padding:100px 0;}
+#ruta .sec-h2{margin-bottom:12px;}
+#ruta .sec-sub{margin-bottom:50px;}
+.route-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;position:relative;}
+.route-step{background:var(--bg2);border:1px solid var(--bd);border-radius:20px;padding:30px 26px;position:relative;transition:border-color .25s,transform .25s;}
+.route-step:hover{border-color:rgba(45,177,225,.32);transform:translateY(-2px);}
+.route-num{font-family:var(--fm);font-size:12px;color:var(--cyan);letter-spacing:.14em;margin-bottom:16px;}
+.route-name{font-family:var(--fh);font-size:19px;font-weight:700;letter-spacing:-.02em;color:var(--td);margin-bottom:6px;}
+.route-for{font-size:13px;line-height:1.55;color:var(--cyan);margin-bottom:16px;font-weight:500;}
+.route-step ul{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:16px;}
+.route-step li{font-size:13.5px;line-height:1.55;color:var(--md);padding-left:16px;position:relative;}
+.route-step li::before{content:'→';position:absolute;left:0;color:var(--cyan);font-weight:700;}
+.route-result{font-size:13px;line-height:1.55;color:var(--md2);border-top:1px solid var(--bd);padding-top:14px;}
+.route-result strong{color:var(--td);font-weight:600;}
+.route-note{text-align:center;font-size:14px;line-height:1.7;color:var(--md);max-width:600px;margin:40px auto 28px;}
+@media(max-width:900px){.route-steps{grid-template-columns:1fr;}}
+
+/* LLAMADA */
+#llamada{background:var(--lt0);color:var(--tl);padding:100px 0;}
+#llamada .lbl{color:var(--deep);}
+#llamada .sec-h2{color:var(--tl);margin-bottom:44px;}
+.call-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+.call-step{text-align:left;}
+.call-ico{width:46px;height:46px;border-radius:13px;background:rgba(30,128,214,.09);border:1px solid rgba(30,128,214,.2);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-weight:800;color:var(--deep);margin-bottom:16px;}
+.call-step h3{font-family:var(--fh);font-size:16.5px;font-weight:700;letter-spacing:-.015em;color:var(--tl);margin-bottom:8px;}
+.call-step p{font-size:14px;line-height:1.65;color:var(--ml);}
+.call-meta{text-align:center;margin-top:44px;font-family:var(--fm);font-size:12px;letter-spacing:.1em;color:rgba(13,24,40,.42);}
+@media(max-width:768px){.call-steps{grid-template-columns:1fr;gap:26px;}}
+
+/* CONFIANZA */
+#confianza{background:var(--navy);padding:90px 0;}
+#confianza .sec-h2{color:var(--td);margin-bottom:40px;max-width:600px;}
+.trust-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+.trust-item{display:flex;gap:14px;align-items:flex-start;padding:4px 0;}
+.trust-ico{width:34px;height:34px;border-radius:10px;background:rgba(45,177,225,.12);border:1px solid rgba(45,177,225,.24);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--cyan);font-weight:800;font-size:14px;}
+.trust-item p{font-size:14.5px;line-height:1.65;color:var(--md);}
+@media(max-width:768px){.trust-grid{grid-template-columns:1fr;}}
+
+/* FAQ */
+#faq{background:var(--bg0);padding:100px 0;}
+#faq .sec-h2{margin-bottom:40px;}
+.faq-list{max-width:760px;display:flex;flex-direction:column;gap:12px;}
+.faq-item{background:var(--bg2);border:1px solid var(--bd);border-radius:16px;overflow:hidden;}
+.faq-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 24px;background:none;border:none;color:var(--td);font-family:var(--fh);font-size:15.5px;font-weight:600;text-align:left;cursor:pointer;}
+.faq-trigger:focus-visible{outline:2px solid var(--cyan);outline-offset:-2px;}
+.faq-chevron{flex-shrink:0;width:20px;height:20px;transition:transform .25s;color:var(--cyan);}
+.faq-item.open .faq-chevron{transform:rotate(180deg);}
+.faq-panel{max-height:0;overflow:hidden;transition:max-height .28s ease;}
+.faq-panel-inner{padding:0 24px 20px;font-size:14.5px;line-height:1.7;color:var(--md);}
+
+/* CTA FINAL + CALENDARIO */
+#agendar{background:var(--navy);padding:110px 0 100px;text-align:center;position:relative;overflow:hidden;}
+.agendar-mesh{position:absolute;inset:0;pointer-events:none;background:radial-gradient(700px 500px at 50% 20%,rgba(45,177,225,.16),transparent 65%);}
+#agendar .sec-h2{color:var(--td);margin:0 auto 14px;max-width:680px;}
+#agendar .sec-sub{color:var(--md);margin:0 auto 40px;}
+.cal-wrap{max-width:720px;margin:0 auto;background:var(--bg2);border:1px solid var(--bd);border-radius:22px;padding:28px;position:relative;z-index:2;}
+.cal-embed{width:100%;min-height:480px;border-radius:14px;background:rgba(255,255,255,.03);border:1px dashed var(--bd);display:flex;align-items:center;justify-content:center;color:var(--md2);font-family:var(--fm);font-size:12.5px;text-align:center;padding:40px 20px;}
+.cal-embed iframe{width:100%;min-height:480px;border:none;border-radius:14px;}
+.cal-cta{width:100%;min-height:480px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid var(--bd);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:40px 24px;text-align:center;}
+.cal-cta-ico{width:64px;height:64px;border-radius:18px;background:rgba(45,177,225,.12);border:1px solid rgba(45,177,225,.24);display:flex;align-items:center;justify-content:center;}
+.cal-cta-ico svg{width:30px;height:30px;}
+.cal-cta-title{font-family:var(--fh);font-size:19px;font-weight:700;letter-spacing:-.015em;color:var(--td);}
+.cal-cta-sub{font-size:14px;line-height:1.6;color:var(--md);max-width:360px;}
+
+/* FOOTER */
+footer{background:var(--bg1);border-top:1px solid var(--bd);padding:38px 0;}
+.ft-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.ft-logo{display:flex;align-items:center;gap:10px;}
+.ft-logo img{width:30px;height:30px;object-fit:contain;}
+.ft-brand{font-family:var(--fh);font-size:14px;font-weight:700;letter-spacing:-.02em;color:var(--td);}
+.ft-brand em{color:var(--cyan);font-style:normal;}
+.ft-links{display:flex;gap:24px;flex-wrap:wrap;}
+.ft-links a{font-size:13px;color:var(--md);transition:color .2s;}
+.ft-links a:hover{color:var(--td);}
+.ft-copy{font-size:12px;color:var(--md2);}
+
+/* STICKY MOBILE CTA */
+.sticky-cta{position:fixed;left:0;right:0;bottom:0;z-index:140;background:rgba(6,11,20,.94);backdrop-filter:blur(14px);border-top:1px solid var(--bd);padding:12px 16px;display:none;transform:translateY(100%);transition:transform .3s ease;}
+.sticky-cta.show{transform:translateY(0);}
+@media(max-width:768px){.sticky-cta{display:block;}}
+
+/* MOBILE GLOBAL */
+@media(max-width:768px){
+  .wrap{padding:0 20px;}
+  .nav-i{padding:0 20px;}
+  .nav-tag{display:none;}
+  #hero{min-height:auto;}
+  .hero-inner{padding:40px 0 50px;gap:18px;}
+  h1{font-size:clamp(28px,8vw,40px);}
+  .hero-sub{font-size:14.5px;}
+  .hero-actions{flex-direction:column;width:100%;}
+  .hero-actions .btn{width:100%;}
+  #problema,#mecanismo,#ruta,#llamada,#faq{padding:60px 0;}
+  #confianza{padding:56px 0;}
+  #agendar{padding:70px 0 90px;}
+  .pain-grid{grid-template-columns:1fr;gap:12px;}
+  .pain-card{padding:22px 24px;}
+  .mech-diagram{gap:12px;}
+  .mech-col{padding:20px 18px;}
+  .route-steps{gap:14px;}
+  .cal-wrap{padding:18px;}
+  .cal-embed,.cal-embed iframe{min-height:380px;}
+  .ft-inner{flex-direction:column;align-items:flex-start;gap:16px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-i">
+    <div class="nav-logo">
+      <img src="../phoenix-mark.png" alt="BPL"/>
+      <div class="nav-name">Blue Phoenix <em>Lab</em></div>
+      <span class="nav-tag">BPL Salud</span>
+    </div>
+    <a href="#agendar" class="btn btn-p btn-sm" style="padding:10px 20px;font-size:13px;" data-track="cta_click" data-section="nav">Agendar llamada →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-mesh"></div>
+  <div class="wrap">
+    <div class="hero-inner">
+      <div class="badge r"><span class="bdot"></span>// Para médicos, dentistas y profesionales de la salud</div>
+
+      <!-- Headline A (activa). B y C quedan comentadas para test A/B. -->
+      <h1 class="r" data-d="1">Su consultorio, funcionando aunque usted esté en consulta.</h1>
+      <!-- <h1>Menos ausencias. Menos caos administrativo. Más tiempo para sus pacientes.</h1> -->
+      <!-- <h1>Su agenda está en tres lugares. Su equipo debería estar en uno.</h1> -->
+
+      <p class="hero-sub r" data-d="2">Instalamos asistentes de IA que confirman citas, dan seguimiento a sus pacientes y ordenan el trabajo administrativo de su consultorio — funcionando con WhatsApp, Huli o la agenda que ya usa.</p>
+
+      <div class="video-wrap r" data-d="2">
+        <div class="video-facade" id="videoFacade" data-video-url="https://www.youtube.com/embed/REEMPLAZAR_ID"><!-- TODO: PLACEHOLDER URL del video -->
+          <img src="../phoenix-mark.png" alt="Video: cómo funciona BPL Salud" id="videoThumb"/><!-- TODO: PLACEHOLDER thumbnail personalizado -->
+          <div class="vf-overlay">
+            <div class="vf-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <div class="vf-caption">5 minutos que pueden cambiar cómo funciona su consultorio</div>
+          </div>
+        </div>
+        <div class="video-note">▶ 5 min · Mírelo antes de agendar</div>
+      </div>
+
+      <div class="hero-actions r" data-d="3">
+        <a href="#agendar" class="btn btn-p" data-track="cta_click" data-section="hero">Agendar mi llamada de diagnóstico</a>
+      </div>
+      <p class="hero-meta r" data-d="3">Llamada de 30 minutos · Sin costo · Sin compromiso</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEMA -->
+<section id="problema">
+  <div class="wrap">
+    <div class="lbl lbl-dark r">¿Le suena familiar?</div>
+    <h2 class="sec-h2 r" data-d="1">El problema no es su equipo.<br>Es que todo depende de que alguien se acuerde.</h2>
+    <div class="pain-grid">
+      <div class="pain-card r" data-d="1">
+        <h3>Agenda dispersa</h3>
+        <p>Citas en Huli, en WhatsApp, en Google Calendar y en el cuaderno de la secretaria. Nadie tiene la foto completa.</p>
+      </div>
+      <div class="pain-card r" data-d="2">
+        <h3>Pacientes que no llegan</h3>
+        <p>Ausencias sin aviso y espacios que se quedan vacíos porque nadie alcanzó a reprogramar.</p>
+      </div>
+      <div class="pain-card r" data-d="3">
+        <h3>Seguimientos que se pierden</h3>
+        <p>Controles que el paciente olvida, presupuestos que se envían y nunca se vuelven a mencionar.</p>
+      </div>
+      <div class="pain-card r" data-d="4">
+        <h3>Administración después de la consulta</h3>
+        <p>Cotizaciones, órdenes de examen, avisos de resultados y cobros que le roban la tarde.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MECANISMO -->
+<section id="mecanismo">
+  <div class="wrap">
+    <div class="lbl r">Cómo funciona</div>
+    <h2 class="sec-h2 r" data-d="1">No reemplazamos sus sistemas.<br>Los ponemos a trabajar.</h2>
+    <p class="sec-sub r" data-d="2">Si usa Huli, Google Calendar o simplemente WhatsApp, no tiene que cambiar nada. Instalamos un equipo de asistentes de IA, cada uno con una función clara, que trabaja sobre lo que usted ya tiene — en un solo número de WhatsApp de su consultorio, con reglas definidas por usted.</p>
+    <div class="mech-diagram r" data-d="3">
+      <div class="mech-col">
+        <div class="mech-col-tag">Lo que ya usa</div>
+        <ul><li>Huli</li><li>Google Calendar</li><li>WhatsApp</li><li>Cuaderno de citas</li></ul>
+      </div>
+      <div class="mech-arrow">→</div>
+      <div class="mech-col">
+        <div class="mech-col-tag">Equipo de asistentes BPL</div>
+        <ul><li>Recepción</li><li>Seguimiento</li><li>Administración</li></ul>
+      </div>
+      <div class="mech-arrow">→</div>
+      <div class="mech-col">
+        <div class="mech-col-tag">Resultado</div>
+        <ul><li>Agenda centralizada</li><li>Pacientes atendidos</li><li>Equipo liberado</li></ul>
+      </div>
+    </div>
+    <p class="mech-note r" data-d="4"><span>⚠</span> Trabajamos junto a su sistema actual (Huli, Calendar, WhatsApp). No afirmamos integración directa hasta confirmar disponibilidad de API con cada caso.</p>
+  </div>
+</section>
+
+<!-- RUTA -->
+<section id="ruta">
+  <div class="wrap">
+    <div class="lbl r">La ruta BPL Salud</div>
+    <h2 class="sec-h2 r" data-d="1">Una ruta clara, a su ritmo.</h2>
+    <p class="sec-sub r" data-d="2">Empezamos donde está hoy su consultorio y avanzamos solo cuando tenga sentido.</p>
+
+    <div class="route-steps" style="margin-top:44px;">
+      <div class="route-step r" data-d="1">
+        <div class="route-num">PASO 1</div>
+        <div class="route-name">Consultoría de IA para su consultorio</div>
+        <div class="route-for">Para el profesional que quiere capacitarse —junto a su equipo— en el uso práctico de la IA.</div>
+        <ul>
+          <li>Diagnóstico de procesos: dónde se pierde tiempo, pacientes y dinero</li>
+          <li>Capacitación práctica con las herramientas de IA que tienen sentido para su consultorio</li>
+          <li>Entrenamiento de su equipo (incluida su secretaria o asistente) para aplicarlo en el día a día</li>
+        </ul>
+        <div class="route-result"><strong>Resultado:</strong> su equipo capacitado en IA y un plan claro de qué automatizar primero.</div>
+      </div>
+
+      <div class="route-step r" data-d="2">
+        <div class="route-num">PASO 2</div>
+        <div class="route-name">Agente de Agenda por WhatsApp</div>
+        <div class="route-for">Para consultorios que agendan en varios sistemas a la vez y pierden citas por falta de respuesta.</div>
+        <ul>
+          <li>Responde, agenda y reprograma por WhatsApp, también fuera de horario</li>
+          <li>Unifica su agenda, sea que use Google Calendar, Calendly o HuliHealth</li>
+          <li>Confirmaciones y recordatorios automáticos antes de cada cita</li>
+        </ul>
+        <div class="route-result"><strong>Resultado:</strong> una sola agenda centralizada y ningún paciente sin respuesta.</div>
+      </div>
+
+      <div class="route-step r" data-d="3">
+        <div class="route-num">PASO 3</div>
+        <div class="route-name">Organigrama AI™ Salud</div>
+        <div class="route-for">Para consultorios y clínicas que quieren un equipo de agentes trabajando en todas las áreas.</div>
+        <ul>
+          <li>Un sistema de agentes a la medida de su centro de salud: marketing, seguimiento, administración y cotizaciones</li>
+          <li>Seguimiento de controles, post-consulta y presupuestos pendientes</li>
+          <li>Cotizaciones, órdenes de examen y avisos de resultados listos, sin perseguir a nadie</li>
+        </ul>
+        <div class="route-result"><strong>Resultado:</strong> su consultorio funcionando como un sistema, no como una persona apagando incendios.</div>
+      </div>
+    </div>
+
+    <p class="route-note r" data-d="4">Cada consultorio es distinto. En la llamada de diagnóstico revisamos su caso y le recomendamos por dónde empezar.</p>
+    <div style="text-align:center;" class="r" data-d="4">
+      <a href="#agendar" class="btn btn-p" data-track="cta_click" data-section="ruta">Descubrir por dónde empezar → Agendar llamada</a>
+    </div>
+  </div>
+</section>
+
+<!-- LLAMADA -->
+<section id="llamada">
+  <div class="wrap">
+    <div class="lbl r">La llamada</div>
+    <h2 class="sec-h2 r" data-d="1">Qué pasa en la llamada de diagnóstico</h2>
+    <div class="call-steps">
+      <div class="call-step r" data-d="1">
+        <div class="call-ico">1</div>
+        <h3>Revisamos su operación</h3>
+        <p>Cómo agenda hoy, dónde se le pierden pacientes y tiempo.</p>
+      </div>
+      <div class="call-step r" data-d="2">
+        <div class="call-ico">2</div>
+        <h3>Calculamos el impacto</h3>
+        <p>Cuánto le cuesta el desorden actual, con sus propios números.</p>
+      </div>
+      <div class="call-step r" data-d="3">
+        <div class="call-ico">3</div>
+        <h3>Le mostramos el camino</h3>
+        <p>Qué tendría sentido automatizar primero y cómo se vería en su consultorio.</p>
+      </div>
+    </div>
+    <p class="call-meta">30 minutos · Por videollamada · Con Jorge Tou y el equipo de Blue Phoenix Lab</p>
+  </div>
+</section>
+
+<!-- CONFIANZA -->
+<section id="confianza">
+  <div class="wrap">
+    <div class="lbl r">Privacidad</div>
+    <h2 class="sec-h2 r" data-d="1">Datos de pacientes, tratados con el cuidado que merecen.</h2>
+    <div class="trust-grid">
+      <div class="trust-item r" data-d="1"><div class="trust-ico">✓</div><p>Diseñado considerando la <strong>Ley 8968</strong> de Protección de Datos Personales de Costa Rica.</p></div>
+      <div class="trust-item r" data-d="2"><div class="trust-ico">✓</div><p>Un número institucional de WhatsApp para su consultorio: nada de celulares personales.</p></div>
+      <div class="trust-item r" data-d="3"><div class="trust-ico">✓</div><p>Los asistentes <strong>no dan consejo médico</strong>: todo lo clínico pasa a usted o a su equipo.</p></div>
+      <div class="trust-item r" data-d="4"><div class="trust-ico">✓</div><p>Consentimiento del paciente y datos mínimos en cada mensaje.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="lbl r">Preguntas frecuentes</div>
+    <h2 class="sec-h2 r" data-d="1">Antes de agendar</h2>
+    <div class="faq-list r" data-d="2">
+      <div class="faq-item">
+        <button type="button" class="faq-trigger" aria-expanded="false">
+          <span>¿Tengo que dejar de usar Huli (o mi sistema actual)?</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="faq-panel"><div class="faq-panel-inner">No. Trabajamos junto a lo que ya usa. El objetivo es centralizar, no agregar otra herramienta que aprender.</div></div>
+      </div>
+      <div class="faq-item">
+        <button type="button" class="faq-trigger" aria-expanded="false">
+          <span>¿Mis pacientes van a sentir que hablan con un robot?</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="faq-panel"><div class="faq-panel-inner">Los asistentes responden con el tono de su consultorio, con información que usted define, y pasan a una persona cuando la situación lo requiere.</div></div>
+      </div>
+      <div class="faq-item">
+        <button type="button" class="faq-trigger" aria-expanded="false">
+          <span>¿La IA va a dar indicaciones médicas?</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="faq-panel"><div class="faq-panel-inner">No. Los asistentes gestionan agenda, seguimiento y administración. Cualquier consulta clínica se deriva a usted o a su equipo.</div></div>
+      </div>
+      <div class="faq-item">
+        <button type="button" class="faq-trigger" aria-expanded="false">
+          <span>¿Necesito saber de tecnología?</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="faq-panel"><div class="faq-panel-inner">No. Nosotros diseñamos, instalamos y capacitamos a su equipo. Usted solo valida que funcione como quiere.</div></div>
+      </div>
+      <div class="faq-item">
+        <button type="button" class="faq-trigger" aria-expanded="false">
+          <span>¿Cuánto cuesta?</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="faq-panel"><div class="faq-panel-inner">Depende de su consultorio y por dónde tenga sentido empezar. Lo revisamos juntos en la llamada, con números claros.</div></div>
+      </div>
+      <div class="faq-item">
+        <button type="button" class="faq-trigger" aria-expanded="false">
+          <span>¿Cuánto tarda la implementación?</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="faq-panel"><div class="faq-panel-inner">Depende del servicio; el agente de agenda por WhatsApp puede estar funcionando en pocos días. Le damos el plazo exacto en la llamada.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AGENDAR / CTA FINAL -->
+<section id="agendar">
+  <div class="agendar-mesh"></div>
+  <div class="wrap" style="position:relative;z-index:2;">
+    <h2 class="sec-h2 r" data-d="1">Su consultorio puede funcionar distinto a partir de este mes.</h2>
+    <p class="sec-sub r" data-d="2" style="margin-left:auto;margin-right:auto;">Agende 30 minutos con nosotros y salga con un diagnóstico claro, aunque decida no avanzar.</p>
+    <div class="cal-wrap r" data-d="3">
+      <div class="cal-embed" id="calEmbed">
+        <!-- TODO: PLACEHOLDER embed de calendario — GoHighLevel o Calendly -->
+        [PLACEHOLDER: pegar aquí el iframe o script embed de GoHighLevel/Calendly. Ver const CAL_URL en el script.]
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="ft-inner">
+      <div class="ft-logo">
+        <img src="../phoenix-mark.png" alt="BPL"/>
+        <div class="ft-brand">Blue Phoenix <em>Lab</em></div>
+      </div>
+      <div class="ft-links">
+        <a href="#" rel="noopener"><!-- TODO: PLACEHOLDER link política de privacidad -->Política de privacidad</a>
+        <a href="#"><!-- TODO: PLACEHOLDER redes sociales -->Instagram</a>
+        <a href="../index.html">Volver al sitio principal</a>
+      </div>
+      <div class="ft-copy">© 2026 Blue Phoenix Lab · Costa Rica</div>
+    </div>
+  </div>
+</footer>
+
+<!-- STICKY CTA MÓVIL -->
+<div class="sticky-cta" id="stickyCta">
+  <a href="#agendar" class="btn btn-p btn-block" data-track="cta_click" data-section="sticky">Agendar llamada</a>
+</div>
+
+<!-- META PIXEL (PLACEHOLDER) -->
+<!--
+<script>
+!function(f,b,e,v,n,t,s){...}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', 'PLACEHOLDER_META_PIXEL_ID');
+fbq('track', 'PageView');
+</script>
+-->
+
+<!-- GA4 (PLACEHOLDER) -->
+<!--
+<script async src="https://www.googletagmanager.com/gtag/js?id=PLACEHOLDER_GA4_ID"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'PLACEHOLDER_GA4_ID');
+</script>
+-->
+
+<script>
+/* ===================== REFERIDOS (ref / utm) ===================== */
+const REF_KEY = "bpl_salud_ref";
+function getParam(name){
+  const m = new URLSearchParams(window.location.search);
+  return m.get(name);
+}
+let refData;
+try {
+  refData = JSON.parse(localStorage.getItem(REF_KEY)) || {};
+} catch(e){ refData = {}; }
+const incoming = {
+  ref: getParam("ref"),
+  utm_source: getParam("utm_source"),
+  utm_medium: getParam("utm_medium"),
+  utm_campaign: getParam("utm_campaign"),
+};
+Object.keys(incoming).forEach(k => { if (incoming[k]) refData[k] = incoming[k]; });
+if (!refData.ref) refData.ref = "directo";
+try { localStorage.setItem(REF_KEY, JSON.stringify(refData)); } catch(e){}
+
+/* ===================== CALENDARIO (ref como parámetro) ===================== */
+const CAL_URL = "https://calendar.app.google/HB9gNUGYqVZdd3MPA";
+(function initCalendar(){
+  const box = document.getElementById("calEmbed");
+  if (!CAL_URL) return; // deja visible el placeholder hasta que se configure
+  const url = new URL(CAL_URL);
+  Object.keys(refData).forEach(k => url.searchParams.set(k, refData[k]));
+  const isGoogleCal = /calendar\.(app\.)?google/.test(CAL_URL);
+  if (isGoogleCal) {
+    // Las páginas de reservas de Google Calendar bloquean el embebido en iframe (X-Frame-Options),
+    // así que mostramos un CTA que abre la reserva en una pestaña nueva en vez de un iframe en blanco.
+    box.outerHTML = `<div class="cal-cta" id="calEmbed">
+      <div class="cal-cta-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#2DB1E1" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="m9 16 2 2 4-4"/></svg></div>
+      <div class="cal-cta-title">Reserve su llamada de diagnóstico</div>
+      <div class="cal-cta-sub">Se abre su calendario de Google Calendar en una pestaña nueva para elegir el horario que le acomode.</div>
+      <a href="${url.toString()}" target="_blank" rel="noopener" class="btn btn-p" data-track="cta_click" data-section="calendario">Ver horarios disponibles →</a>
+    </div>`;
+  } else {
+    box.innerHTML = `<iframe src="${url.toString()}" title="Agendar llamada" loading="lazy"></iframe>`;
+  }
+})();
+
+/* ===================== VIDEO FACADE ===================== */
+(function(){
+  const facade = document.getElementById("videoFacade");
+  if (!facade) return;
+  facade.addEventListener("click", function(){
+    const url = facade.dataset.videoUrl;
+    const wrap = facade.parentElement;
+    const iframe = document.createElement("iframe");
+    iframe.src = url + (url.includes("?") ? "&" : "?") + "autoplay=1";
+    iframe.allow = "autoplay; fullscreen";
+    iframe.allowFullscreen = true;
+    wrap.replaceChild(iframe, facade);
+    track("video_play", { section: "hero" });
+  }, { once: true });
+})();
+
+/* ===================== FAQ ACCORDION ===================== */
+document.querySelectorAll(".faq-item").forEach(item => {
+  const trigger = item.querySelector(".faq-trigger");
+  const panel = item.querySelector(".faq-panel");
+  trigger.addEventListener("click", () => {
+    const isOpen = item.classList.contains("open");
+    document.querySelectorAll(".faq-item.open").forEach(other => {
+      if (other !== item) {
+        other.classList.remove("open");
+        other.querySelector(".faq-trigger").setAttribute("aria-expanded","false");
+        other.querySelector(".faq-panel").style.maxHeight = null;
+      }
+    });
+    item.classList.toggle("open", !isOpen);
+    trigger.setAttribute("aria-expanded", String(!isOpen));
+    panel.style.maxHeight = !isOpen ? panel.scrollHeight + "px" : null;
+  });
+});
+
+/* ===================== SCROLL REVEAL ===================== */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("on"); io.unobserve(e.target); } });
+}, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
+document.querySelectorAll(".r").forEach(el => io.observe(el));
+
+/* ===================== STICKY CTA MÓVIL ===================== */
+(function(){
+  const sticky = document.getElementById("stickyCta");
+  const hero = document.getElementById("hero");
+  if (!sticky || !hero) return;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => sticky.classList.toggle("show", !e.isIntersecting));
+  }, { threshold: 0 });
+  obs.observe(hero);
+})();
+
+/* ===================== SCHEDULE VIEW ===================== */
+(function(){
+  const agendar = document.getElementById("agendar");
+  if (!agendar) return;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { track("schedule_view", {}); obs.disconnect(); } });
+  }, { threshold: 0.3 });
+  obs.observe(agendar);
+})();
+
+/* ===================== CTA CLICK TRACKING ===================== */
+document.querySelectorAll("[data-track]").forEach(el => {
+  el.addEventListener("click", () => track(el.dataset.track, { section: el.dataset.section }));
+});
+
+/* ===================== TRACKING STUB ===================== */
+function track(event, params){
+  // TODO: conectar a Meta Pixel / GA4 cuando los IDs estén configurados (ver placeholders arriba)
+  console.log("[track]", event, Object.assign({ ref: refData.ref }, params || {}));
+  // if (window.fbq) fbq('trackCustom', event, params);
+  // if (window.gtag) gtag('event', event, params);
+}
+</script>
+</body>
+</html>
