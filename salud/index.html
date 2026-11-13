@@ -246,7 +246,7 @@ footer{background:var(--bg1);border-top:1px solid var(--bd);padding:38px 0;}
       <div class="nav-name">Blue Phoenix <em>Lab</em></div>
       <span class="nav-tag">BPL Salud</span>
     </div>
-    <a href="#agendar" class="btn btn-p btn-sm" style="padding:10px 20px;font-size:13px;" data-track="cta_click" data-section="nav">Agendar llamada →</a>
+    <a href="#agendar" class="btn btn-p btn-sm cta-cal" style="padding:10px 20px;font-size:13px;" data-track="cta_click" data-section="nav">Agendar llamada →</a>
   </div>
 </nav>
 
@@ -275,7 +275,7 @@ footer{background:var(--bg1);border-top:1px solid var(--bd);padding:38px 0;}
       </div>
 
       <div class="hero-actions r" data-d="3">
-        <a href="#agendar" class="btn btn-p" data-track="cta_click" data-section="hero">Agendar mi llamada de diagnóstico</a>
+        <a href="#agendar" class="btn btn-p cta-cal" data-track="cta_click" data-section="hero">Agendar mi llamada de diagnóstico</a>
       </div>
       <p class="hero-meta r" data-d="3">Llamada de 30 minutos · Sin costo · Sin compromiso</p>
     </div>
@@ -381,7 +381,7 @@ footer{background:var(--bg1);border-top:1px solid var(--bd);padding:38px 0;}
 
     <p class="route-note r" data-d="4">Cada consultorio es distinto. En la llamada de diagnóstico revisamos su caso y le recomendamos por dónde empezar.</p>
     <div style="text-align:center;" class="r" data-d="4">
-      <a href="#agendar" class="btn btn-p" data-track="cta_click" data-section="ruta">Descubrir por dónde empezar → Agendar llamada</a>
+      <a href="#agendar" class="btn btn-p cta-cal" data-track="cta_click" data-section="ruta">Descubrir por dónde empezar → Agendar llamada</a>
     </div>
   </div>
 </section>
@@ -512,7 +512,7 @@ footer{background:var(--bg1);border-top:1px solid var(--bd);padding:38px 0;}
 
 <!-- STICKY CTA MÓVIL -->
 <div class="sticky-cta" id="stickyCta">
-  <a href="#agendar" class="btn btn-p btn-block" data-track="cta_click" data-section="sticky">Agendar llamada</a>
+  <a href="#agendar" class="btn btn-p btn-block cta-cal" data-track="cta_click" data-section="sticky">Agendar llamada</a>
 </div>
 
 <!-- META PIXEL (PLACEHOLDER) -->
@@ -558,11 +558,14 @@ try { localStorage.setItem(REF_KEY, JSON.stringify(refData)); } catch(e){}
 
 /* ===================== CALENDARIO (ref como parámetro) ===================== */
 const CAL_URL = "https://calendar.app.google/HB9gNUGYqVZdd3MPA";
+function buildCalUrl(){
+  const url = new URL(CAL_URL);
+  Object.keys(refData).forEach(k => url.searchParams.set(k, refData[k]));
+  return url.toString();
+}
 (function initCalendar(){
   const box = document.getElementById("calEmbed");
   if (!CAL_URL) return; // deja visible el placeholder hasta que se configure
-  const url = new URL(CAL_URL);
-  Object.keys(refData).forEach(k => url.searchParams.set(k, refData[k]));
   const isGoogleCal = /calendar\.(app\.)?google/.test(CAL_URL);
   if (isGoogleCal) {
     // Las páginas de reservas de Google Calendar bloquean el embebido en iframe (X-Frame-Options),
@@ -571,12 +574,19 @@ const CAL_URL = "https://calendar.app.google/HB9gNUGYqVZdd3MPA";
       <div class="cal-cta-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#2DB1E1" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="m9 16 2 2 4-4"/></svg></div>
       <div class="cal-cta-title">Reserve su llamada de diagnóstico</div>
       <div class="cal-cta-sub">Se abre su calendario de Google Calendar en una pestaña nueva para elegir el horario que le acomode.</div>
-      <a href="${url.toString()}" target="_blank" rel="noopener" class="btn btn-p" data-track="cta_click" data-section="calendario">Ver horarios disponibles →</a>
+      <a href="${buildCalUrl()}" target="_blank" rel="noopener" class="btn btn-p" data-track="cta_click" data-section="calendario">Ver horarios disponibles →</a>
     </div>`;
   } else {
-    box.innerHTML = `<iframe src="${url.toString()}" title="Agendar llamada" loading="lazy"></iframe>`;
+    box.innerHTML = `<iframe src="${buildCalUrl()}" title="Agendar llamada" loading="lazy"></iframe>`;
   }
 })();
+
+/* ===================== CTAs "AGENDAR LLAMADA" → VAN DIRECTO A GOOGLE CALENDAR ===================== */
+document.querySelectorAll(".cta-cal").forEach(a => {
+  a.href = buildCalUrl();
+  a.target = "_blank";
+  a.rel = "noopener";
+});
 
 /* ===================== VIDEO FACADE ===================== */
 (function(){
