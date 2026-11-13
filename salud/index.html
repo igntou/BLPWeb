@@ -8,8 +8,8 @@
 <meta name="robots" content="noindex,follow"/>
 <!--
   PLACEHOLDERS PENDIENTES EN ESTA PÁGINA:
-  1. [PLACEHOLDER: URL del video — YouTube no listado, Vimeo o Wistia] → ver #hero-video-facade (data-video-url) y meta videoThumb
-  2. [PLACEHOLDER: thumbnail/poster del video] → ver .video-facade img
+  1. Video → resuelto con Loom (https://www.loom.com/embed/09ca2724663845009bf1be0fe287109a), ver data-video-url en #videoFacade
+  2. Thumbnail del video → resuelto con el GIF de Loom (thumbnail.gif), ver #videoThumb
   3. Calendario de agendamiento → resuelto con https://calendar.app.google/HB9gNUGYqVZdd3MPA (ver const CAL_URL en <script>)
   4. [PLACEHOLDER: dominio y slug final de la landing] → confirmar con bpl.lat/salud o dominio propio
   5. [PLACEHOLDER: Meta Pixel ID] → ver <script> comentado de Meta Pixel
@@ -94,14 +94,14 @@ h1{font-family:var(--fh);font-weight:800;line-height:1.08;letter-spacing:-.035em
 .hero-meta{font-size:12px;font-family:var(--fm);color:var(--md2);letter-spacing:.1em;}
 
 .video-wrap{width:100%;max-width:860px;margin-top:18px;}
-.video-facade{position:relative;aspect-ratio:16/9;border-radius:20px;overflow:hidden;background:var(--bg2);border:1px solid var(--bd);cursor:pointer;box-shadow:0 40px 90px -30px rgba(14,26,47,.6);}
+.video-facade{position:relative;aspect-ratio:480/223;border-radius:20px;overflow:hidden;background:var(--bg2);border:1px solid var(--bd);cursor:pointer;box-shadow:0 40px 90px -30px rgba(14,26,47,.6);}
 .video-facade img{width:100%;height:100%;object-fit:cover;opacity:.78;}
 .video-facade .vf-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,11,20,.1),rgba(6,11,20,.55));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;}
 .vf-play{width:72px;height:72px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;box-shadow:0 14px 40px -8px rgba(30,128,214,.7);transition:transform .2s;}
 .video-facade:hover .vf-play{transform:scale(1.08);}
 .vf-play svg{width:26px;height:26px;fill:#fff;}
 .vf-caption{font-family:var(--fh);font-size:15px;font-weight:600;color:#fff;text-align:center;max-width:380px;padding:0 20px;}
-.video-wrap iframe{width:100%;aspect-ratio:16/9;border-radius:20px;border:none;display:block;}
+.video-wrap iframe{width:100%;aspect-ratio:480/223;border-radius:20px;border:none;display:block;}
 .video-note{margin-top:12px;font-family:var(--fm);font-size:12px;letter-spacing:.08em;color:var(--md2);text-align:center;}
 
 /* PROBLEMA */
@@ -266,8 +266,8 @@ footer{background:var(--bg1);border-top:1px solid var(--bd);padding:38px 0;}
       <p class="hero-sub r" data-d="2">Instalamos asistentes de IA que confirman citas, dan seguimiento a sus pacientes y ordenan el trabajo administrativo de su consultorio — funcionando con WhatsApp, Huli o la agenda que ya usa.</p>
 
       <div class="video-wrap r" data-d="2">
-        <div class="video-facade" id="videoFacade" data-video-url="https://www.youtube.com/embed/REEMPLAZAR_ID"><!-- TODO: PLACEHOLDER URL del video -->
-          <img src="../phoenix-mark.png" alt="Video: cómo funciona BPL Salud" id="videoThumb"/><!-- TODO: PLACEHOLDER thumbnail personalizado -->
+        <div class="video-facade" id="videoFacade" data-video-url="https://www.loom.com/embed/09ca2724663845009bf1be0fe287109a">
+          <img src="https://www.loom.com/v1/videos/09ca2724663845009bf1be0fe287109a/thumbnail.gif" alt="Agentes de IA para gestionar citas en WhatsApp" id="videoThumb"/>
           <div class="vf-overlay">
             <div class="vf-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
             <div class="vf-caption">5 minutos que pueden cambiar cómo funciona su consultorio</div>
@@ -589,7 +589,7 @@ const CAL_URL = "https://calendar.app.google/HB9gNUGYqVZdd3MPA";
     const wrap = facade.parentElement;
     const iframe = document.createElement("iframe");
     iframe.src = url + (url.includes("?") ? "&" : "?") + "autoplay=1";
-    iframe.allow = "autoplay; fullscreen";
+    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen";
     iframe.allowFullscreen = true;
     wrap.replaceChild(iframe, facade);
     track("video_play", { section: "hero" });
